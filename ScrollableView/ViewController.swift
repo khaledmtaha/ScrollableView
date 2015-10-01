@@ -11,7 +11,45 @@ import UIKit
 class ViewController: UIViewController, UIScrollViewDelegate {
 
     var pageControl = UIPageControl()
+    var lcPageControl = LCPageControl()
     var newView = LCScrollableView()
+    
+    var rNewViewA:CGFloat = 0
+    var gNewViewA:CGFloat = 0
+    var bNewViewA:CGFloat = 0
+    var aNewViewA:CGFloat = 0
+    
+    var rNewViewB:CGFloat = 0
+    var gNewViewB:CGFloat = 0
+    var bNewViewB:CGFloat = 0
+    var aNewViewB:CGFloat = 0
+    
+    var rNewViewC:CGFloat = 0
+    var gNewViewC:CGFloat = 0
+    var bNewViewC:CGFloat = 0
+    var aNewViewC:CGFloat = 0
+    
+    var rDistanceAB:CGFloat = 0
+    var gDistanceAB:CGFloat = 0
+    var bDistanceAB:CGFloat = 0
+    
+    var rDistanceBC:CGFloat = 0
+    var gDistanceBC:CGFloat = 0
+    var bDistanceBC:CGFloat = 0
+    
+    var lastContentOffset:CGFloat?
+    
+    var currFrameA:CGRect!
+    
+    var lastPage:Int = 1
+    
+    var pageViewProtection:Bool = false
+    
+    var previousScrollViewPage:Int = 1
+    
+    
+//    var pageControlTouchAnimationsOnly:
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,254 +62,260 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         ConstraintFactory.addEqualHeightConstraints(newView, parentObject: self.view)
         
         configurePageControl ()
-        
+//        newView.bounces = true
         newView.delegate = self
+        newView.showsHorizontalScrollIndicator = false
+        newView.showsVerticalScrollIndicator  = false
+        
+        lcPageControl.addTarget(self, action: "pageControlValueChanged", forControlEvents: UIControlEvents.TouchUpInside)
+    }
+    
+    func getColor () {
+        
+        newView.viewA.backgroundColor?.getRed(&rNewViewA, green: &gNewViewA, blue: &bNewViewA, alpha: &aNewViewA)
+        newView.viewB.backgroundColor?.getRed(&rNewViewB, green: &gNewViewB, blue: &bNewViewB, alpha: &aNewViewB)
+        newView.viewC.backgroundColor?.getRed(&rNewViewC, green: &gNewViewC, blue: &bNewViewC, alpha: &aNewViewC)
+        
+        rDistanceAB = rNewViewA - rNewViewB
+        gDistanceAB = gNewViewA - gNewViewB
+        bDistanceAB = bNewViewA - bNewViewB
+        
+        rDistanceBC = rNewViewB - rNewViewC
+        gDistanceBC = gNewViewB - gNewViewC
+        bDistanceBC = bNewViewB - bNewViewC
+        
+        let distanceAB = (rDistanceAB, gDistanceAB, bDistanceAB)
+        let distanceBC = (rDistanceBC, gDistanceBC, bDistanceBC)
+
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        lcPageControl.comeAlive()
+    }
+    
+
+    
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        var offset = newView.contentOffset.x
+        
+        var size = newView.viewA.bounds.width
+        var offsetToViewPercentage = offset/size
+        var offsetToViewPercentageRounded = round(offsetToViewPercentage)
+
+        var scrollDirection:ScrollDirection = ScrollDirection.None
+        var modifier:CGFloat = 0
+        
+        var pageNumber = floor(offsetToViewPercentage + 1)
+        var pageNumberRound = round(offsetToViewPercentage)+1
+        
+        
+        
+        
+        
+        
+        if let test = lastContentOffset {
+            if offset > lastContentOffset {
+                scrollDirection = ScrollDirection.Right
+            } else if offset < lastContentOffset {
+                scrollDirection = ScrollDirection.Left
+            }
+        }
+        
+        if scrollDirection == ScrollDirection.Left {
+
+        } else if scrollDirection == ScrollDirection.Right {
+            
+        }
+        
+        lastContentOffset = offset
+        
+        if offsetToViewPercentage <= 0.5 {
+            var normalizedRange = offsetToViewPercentage/0.5
+            let alphaChange:CGFloat = 1
+ 
+       
+            newView.viewA.headerLabel.alpha = 1 - normalizedRange * alphaChange
+            newView.viewA.subTextLabel.alpha = 1 - normalizedRange * alphaChange
+            
+            newView.viewB.headerLabel.alpha = 0
+            newView.viewB.subTextLabel.alpha = 0
+            
+        } else if offsetToViewPercentage > 0.5 && offsetToViewPercentage <= 1.0 {
+            var normalizedRange = (offsetToViewPercentage - 0.5)/0.5
+            let alphaChange:CGFloat = 1
+            
+            newView.viewA.headerLabel.alpha = 0
+            newView.viewA.subTextLabel.alpha = 0
+
+            newView.viewB.headerLabel.alpha = 0 + normalizedRange * alphaChange
+            newView.viewB.subTextLabel.alpha = 0 + normalizedRange * alphaChange
+            
+            newView.viewC.headerLabel.alpha = 0
+            newView.viewC.subTextLabel.alpha = 0
+            
+        } else if offsetToViewPercentage > 1.0 && offsetToViewPercentage <= 1.5 {
+            var normalizedRange = (offsetToViewPercentage - 1)/0.5
+            let alphaChange:CGFloat = 1
+            
+            newView.viewB.headerLabel.alpha = 1 - normalizedRange * alphaChange
+            newView.viewB.subTextLabel.alpha = 1 - normalizedRange * alphaChange
+            
+            newView.viewC.headerLabel.alpha = 0
+            newView.viewC.subTextLabel.alpha = 0
+            
+        } else if offsetToViewPercentage > 1.5 && offsetToViewPercentage <= 2.0 {
+            var normalizedRange = (offsetToViewPercentage - 1.5)/0.5
+
+            let alphaChange:CGFloat = 1
+            
+            newView.viewB.headerLabel.alpha = 0
+            newView.viewB.subTextLabel.alpha = 0
+
+            newView.viewC.headerLabel.alpha = 0 + normalizedRange * alphaChange
+            newView.viewC.subTextLabel.alpha = 0 + normalizedRange * alphaChange
+
+        }
+        
+        
+        // Page Indicator
+
+        setPageIndicatorForScroll(offsetToViewPercentage)
+        
 
         
-    }
+        // Labels
+            
+        if offsetToViewPercentage <= 0.5 {
+            var normalizedRange = offsetToViewPercentage/0.5
+            
+            newView.viewA.headerYConstraint.constant = -20 * normalizedRange
+            newView.viewA.subTextYConstraint.constant = 40 + 20 * normalizedRange
+            
+            newView.viewA.headerXConstraint.constant = offset
+            newView.viewA.subTextXConstraint.constant = offset
+            
+            
+        } else if offsetToViewPercentage > 0.5 && offsetToViewPercentage <= 1.0 {
+            var normalizedRange = (offsetToViewPercentage - 0.5)/0.5
+            
+            newView.viewB.headerYConstraint.constant = -20 + 20 * normalizedRange
+            newView.viewB.subTextYConstraint.constant = 40 + 20 - 20 * normalizedRange
+            
+            newView.viewB.headerXConstraint.constant = offset - newView.viewA.bounds.width
+            newView.viewB.subTextXConstraint.constant = offset - newView.viewA.bounds.width
 
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
-        pageControl.currentPage = Int(pageNumber)
+            
+        } else if offsetToViewPercentage > 1.0 && offsetToViewPercentage <= 1.5 {
+            var normalizedRange = (offsetToViewPercentage - 1)/0.5
+            
+            newView.viewB.headerYConstraint.constant = -20 * normalizedRange
+            newView.viewB.subTextYConstraint.constant = 40 + 20 * normalizedRange
+            
+            newView.viewB.headerXConstraint.constant = offset - newView.viewA.bounds.width
+            newView.viewB.subTextXConstraint.constant = offset - newView.viewA.bounds.width
+            
+        } else if offsetToViewPercentage > 1.5 && offsetToViewPercentage <= 2.0 {
+            var normalizedRange = (offsetToViewPercentage - 1.5)/0.5
+            
+            newView.viewC.headerYConstraint.constant = -20 + 20 * normalizedRange
+            newView.viewC.subTextYConstraint.constant = 40 + 20 - 20 * normalizedRange
+            
+            newView.viewC.headerXConstraint.constant = offset - newView.viewA.bounds.width - newView.viewB.bounds.width
+            newView.viewC.subTextXConstraint.constant = offset - newView.viewA.bounds.width - newView.viewB.bounds.width
+            
+            
+        }
+        
+    
     }
     
     func configurePageControl () {
 
-        self.pageControl.numberOfPages = 3
-        self.pageControl.currentPage = 0
-        self.pageControl.tintColor = UIColor.yellowColor()
-        self.pageControl.pageIndicatorTintColor = UIColor.darkGrayColor()
-        self.pageControl.currentPageIndicatorTintColor = UIColor.whiteColor()
-        self.view.addSubview(pageControl)
+        self.lcPageControl.numberOfPages = 3
+        self.view.insertSubview(lcPageControl, aboveSubview: pageControl)
         
-        self.pageControl.setTranslatesAutoresizingMaskIntoConstraints(false)
+        ConstraintFactory.centerX(self.lcPageControl, parentObject: self.view)
+        ConstraintFactory.setMaxYfromBottom(self.lcPageControl, parentObject: self.view, constant: -50)
+        ConstraintFactory.setHeightWithConstant(lcPageControl, constant: 10)
+        ConstraintFactory.setWidthWithConstant(lcPageControl, constant: 40)
+
+        self.lcPageControl.userInteractionEnabled = true
         
-        ConstraintFactory.centerX(self.pageControl, parentObject: self.view)
-        ConstraintFactory.setMinYfromCenter(self.pageControl, parentObject: self.view, constant: 100)
+        
+        
+    }
+    
+    func pageControlValueChanged() {
+        
+      pageViewProtection = true
+        
+        if lastPage != lcPageControl.currentPage {
+
+            let x = 320 * CGFloat(lcPageControl.currentPage - 1)
+            var jumpX : CGFloat?
+            
+            if lcPageControl.currentPage == 1 {
+                jumpX = 159
+            } else if lcPageControl.currentPage == 2 {
+                jumpX = 320 + 159
+            } else {
+                jumpX = 320 + 161
+            }
+            
+            newView.setContentOffset(CGPoint(x: jumpX!, y: 0), animated: false)
+            newView.setContentOffset(CGPoint(x: x, y: 0), animated: true)
+            lastPage = lcPageControl.currentPage
+        }
+
+      
+    }
+    
+    
+    func setPageIndicatorForScroll(offsetToViewPercentage:CGFloat) {
+        
+    
+        
+        if offsetToViewPercentage <= 0.5 {
+            if lcPageControl.currentPage != 1 {
+                lcPageControl.currentPage = 1
+            }
+
+
+        } else if offsetToViewPercentage > 0.5 && offsetToViewPercentage <= 1.5 {
+            if lcPageControl.currentPage != 2 {
+                lcPageControl.currentPage = 2
+            }
+
+
+        } else if offsetToViewPercentage > 1.5 && offsetToViewPercentage <= 2.0 {
+            if lcPageControl.currentPage != 3 {
+                lcPageControl.currentPage = 3
+            }
+
+            
+        }
+        
+    }
+    
+    func protectPageIndicator() {
+        pageViewProtection = true
+        
+    }
+    
+    func unprotectPageView() {
+        pageViewProtection = false
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    
 
 }
 
-class ConstraintFactory {
-    
-    static func processConstraint (parentView:AnyObject, constraint:NSLayoutConstraint) {
-        parentView.addConstraint(constraint)
-    }
-    
-    // SIZE
-    
-    class func addEqualWidthConstraints (childObject:AnyObject, parentObject:AnyObject)  {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: parentObject, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: 0)
-        processConstraint(parentObject, constraint: constraint)
-    }
-    
-    class func addEqualHeightConstraints (childObject:AnyObject, parentObject:AnyObject)  {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: parentObject, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
-        processConstraint(parentObject, constraint: constraint)
-    }
-    
-    class func setWidthWithConstant (childObject:AnyObject, constant:CGFloat) {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: constant)
-        processConstraint(childObject, constraint: constraint)
-    }
-
-    class func setHeightWithConstant (childObject:AnyObject, constant:CGFloat) {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: constant)
-        processConstraint(childObject, constraint: constraint)
-    }
-
-    
-    // POSITION
-    
-    class func centerX (childObject:AnyObject, parentObject:AnyObject) {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: parentObject, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
-        processConstraint(parentObject, constraint: constraint)
-    }
-    
-    class func centerY (childObject:AnyObject, parentObject:AnyObject) {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: parentObject, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
-        processConstraint(parentObject, constraint: constraint)
-    }
-    
-    
-    class func setMinYfromCenter (childObject:AnyObject, parentObject:AnyObject, constant:CGFloat) {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: parentObject, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: constant)
-        processConstraint(parentObject, constraint: constraint)
-    }
-
-    // ALIGN
-    
-    
-    class func alignMinX (childObject:AnyObject, parentObject:AnyObject) {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: parentObject, attribute: NSLayoutAttribute.Left, multiplier: 1, constant: 0)
-        processConstraint(parentObject, constraint: constraint)
-    }
-    
-    class func alignMaxX (childObject:AnyObject, parentObject:AnyObject) {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: parentObject, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: 0)
-        processConstraint(parentObject, constraint: constraint)
-    }
-    
-    class func alignMinY (childObject:AnyObject, parentObject:AnyObject) {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: parentObject, attribute: NSLayoutAttribute.Top, multiplier: 1, constant: 0)
-        processConstraint(parentObject, constraint: constraint)
-    }
-    
-    // DISTRIBUTE
-    
-    class func distributeHorizontally (childObject:AnyObject, adjacentObject:AnyObject, parentObject:AnyObject, spacing:CGFloat) {
-        let constraint = NSLayoutConstraint(item: childObject, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: adjacentObject, attribute: NSLayoutAttribute.Right, multiplier: 1, constant: spacing)
-        processConstraint(parentObject, constraint: constraint)
-    }
-    
-    
-    
-}
-
-
-
-
-
-
-
-
-
-
-
-class LCScrollableView:UIScrollView {
-    
-    var viewA:LCView!
-    var viewB:LCView!
-    var viewC:LCView!
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        commonInit()
-    }
-    
-    private func commonInit() {
-        
-        self.backgroundColor = UIColor.clearColor()
-        self.bounces = false
-        self.pagingEnabled = true
-        self.showsHorizontalScrollIndicator = true
-        self.showsVerticalScrollIndicator = true
-        
-        viewA = LCView()
-        viewA.textBox.text = "Box A"
-        viewA.backgroundColor = setRandomBGColor()
-        viewA.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
-        self.insertSubview(viewA, atIndex: 0)
-        
-        viewB = LCView()
-        viewB.textBox.text = "Box B"
-        viewB.backgroundColor = setRandomBGColor()
-        viewB.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
-        self.insertSubview(viewB, atIndex: 0)
-        
-        viewC = LCView()
-        viewC.textBox.text = "Box C"
-        viewC.backgroundColor = setRandomBGColor()
-        viewC.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
-        self.insertSubview(viewC, atIndex: 0)
-        
-        ConstraintFactory.alignMinX(viewA, parentObject: self)
-        ConstraintFactory.alignMinY(viewA, parentObject: self)
-        ConstraintFactory.addEqualHeightConstraints(viewA, parentObject: self)
-        ConstraintFactory.addEqualWidthConstraints(viewA, parentObject: self)
-
-        ConstraintFactory.distributeHorizontally(viewB, adjacentObject: viewA, parentObject: self, spacing: 0)
-        ConstraintFactory.alignMinY(viewB, parentObject: self)
-        ConstraintFactory.addEqualHeightConstraints(viewB, parentObject: self)
-        ConstraintFactory.addEqualWidthConstraints(viewB, parentObject: self)
-        
-        ConstraintFactory.distributeHorizontally(viewC, adjacentObject: viewB, parentObject: self, spacing: 0)
-        ConstraintFactory.alignMaxX(viewC, parentObject: self)
-        ConstraintFactory.alignMinY(viewC, parentObject: self)
-        ConstraintFactory.addEqualHeightConstraints(viewC, parentObject: self)
-        ConstraintFactory.addEqualWidthConstraints(viewC, parentObject: self)
-        
-        self.layoutIfNeeded()
-        
-        println(viewA.frame.size)
-        
-        
-
-
-    }
-    
-    
-    
-    
-    func setRandomBGColor () -> (UIColor) {
-        return UIColor(red: randomRBG(), green: randomRBG(), blue: randomRBG(), alpha: 1)
-    }
-    
-    func randomRBG () -> CGFloat {
-        return CGFloat(arc4random_uniform(100))/100
-    }
-    
-    func createGrid () {
-        let frame = self.systemLayoutSizeFittingSize(UILayoutFittingExpandedSize)
-        println(frame)
-        let pixelIncrement:CGFloat = 10
-        let amountOfGridPoints = frame.width/pixelIncrement
-        
-        var index:CGFloat = 0
-        
-        for index = 0; index < amountOfGridPoints; ++index {
-            let gridView = UIView(frame: CGRectMake(index * pixelIncrement, 400, 2, 10))
-            gridView.backgroundColor = UIColor.redColor()
-            self.addSubview(gridView)
-            
-            
-        }
-    }
-}
-
-
-class LCView:UIView {
-    
-    var textBox:UILabel!
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        commonInit()
-    }
-    
-    private func commonInit () {
-        textBox = UILabel()
-        textBox.backgroundColor = UIColor.redColor()
-        textBox.setTranslatesAutoresizingMaskIntoConstraints(false)
-        textBox.text = "Hello, World"
-        textBox.textColor = UIColor.whiteColor()
-        textBox.textAlignment = NSTextAlignment.Center
-    
-        self.insertSubview(textBox, atIndex: 0)
-        ConstraintFactory.centerX(textBox, parentObject: self)
-        ConstraintFactory.centerY(textBox, parentObject: self)
-        ConstraintFactory.setWidthWithConstant(textBox, constant: 200)
-        ConstraintFactory.setHeightWithConstant(textBox, constant: 50)
-        
-    }
-    
-}
 

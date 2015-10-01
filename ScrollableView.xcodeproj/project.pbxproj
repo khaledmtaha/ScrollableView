@@ -13,6 +13,10 @@
 		EA4838281B838C20004C4BD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA4838271B838C20004C4BD5 /* Images.xcassets */; };
 		EA48382B1B838C20004C4BD5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA4838291B838C20004C4BD5 /* LaunchScreen.xib */; };
 		EA4838371B838C20004C4BD5 /* ScrollableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4838361B838C20004C4BD5 /* ScrollableViewTests.swift */; };
+		EAEF909B1BBB679A00B9A7D0 /* LCPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEF909A1BBB679A00B9A7D0 /* LCPageView.swift */; };
+		EAEF909D1BBC5CF700B9A7D0 /* LCScrollableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEF909C1BBC5CF700B9A7D0 /* LCScrollableView.swift */; };
+		EAEF909F1BBC5D1100B9A7D0 /* ConstraintFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEF909E1BBC5D1100B9A7D0 /* ConstraintFactory.swift */; };
+		EAEF90A11BBC5D4E00B9A7D0 /* LCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEF90A01BBC5D4E00B9A7D0 /* LCView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +40,10 @@
 		EA4838301B838C20004C4BD5 /* ScrollableViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScrollableViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA4838351B838C20004C4BD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA4838361B838C20004C4BD5 /* ScrollableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableViewTests.swift; sourceTree = "<group>"; };
+		EAEF909A1BBB679A00B9A7D0 /* LCPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCPageView.swift; sourceTree = "<group>"; };
+		EAEF909C1BBC5CF700B9A7D0 /* LCScrollableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCScrollableView.swift; sourceTree = "<group>"; };
+		EAEF909E1BBC5D1100B9A7D0 /* ConstraintFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintFactory.swift; sourceTree = "<group>"; };
+		EAEF90A01BBC5D4E00B9A7D0 /* LCView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +87,11 @@
 			children = (
 				EA4838201B838C20004C4BD5 /* AppDelegate.swift */,
 				EA4838221B838C20004C4BD5 /* ViewController.swift */,
+				EAEF909A1BBB679A00B9A7D0 /* LCPageView.swift */,
+				EAEF909C1BBC5CF700B9A7D0 /* LCScrollableView.swift */,
 				EA4838241B838C20004C4BD5 /* Main.storyboard */,
+				EAEF909E1BBC5D1100B9A7D0 /* ConstraintFactory.swift */,
+				EAEF90A01BBC5D4E00B9A7D0 /* LCView.swift */,
 				EA4838271B838C20004C4BD5 /* Images.xcassets */,
 				EA4838291B838C20004C4BD5 /* LaunchScreen.xib */,
 				EA48381E1B838C20004C4BD5 /* Supporting Files */,
@@ -214,6 +226,10 @@
 			files = (
 				EA4838231B838C20004C4BD5 /* ViewController.swift in Sources */,
 				EA4838211B838C20004C4BD5 /* AppDelegate.swift in Sources */,
+				EAEF909D1BBC5CF700B9A7D0 /* LCScrollableView.swift in Sources */,
+				EAEF909B1BBB679A00B9A7D0 /* LCPageView.swift in Sources */,
+				EAEF909F1BBC5D1100B9A7D0 /* ConstraintFactory.swift in Sources */,
+				EAEF90A11BBC5D4E00B9A7D0 /* LCView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +425,7 @@
 				EA48383C1B838C20004C4BD5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EA48383D1B838C20004C4BD5 /* Build configuration list for PBXNativeTarget "ScrollableViewTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +434,7 @@
 				EA48383F1B838C20004C4BD5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
