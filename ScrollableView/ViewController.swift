@@ -47,13 +47,17 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     
     var previousScrollViewPage:Int = 1
     
+    var backgroundColorA = UIColor(red: 233/255, green: 71/255, blue: 37/255, alpha: 1)
+    var backgroundColorB = UIColor(red: 1/255, green: 186/255, blue: 226/255, alpha: 1)
+    var backgroundColorC = UIColor(red: 97/255, green: 187/255, blue: 70/255, alpha: 1)
+ 
     
 //    var pageControlTouchAnimationsOnly:
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        newView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        newView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(newView)
 
         ConstraintFactory.centerX(newView, parentObject: self.view)
@@ -62,6 +66,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         ConstraintFactory.addEqualHeightConstraints(newView, parentObject: self.view)
         
         configurePageControl ()
+        configureBGColor()
+        
 //        newView.bounces = true
         newView.delegate = self
         newView.showsHorizontalScrollIndicator = false
@@ -111,11 +117,6 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         var pageNumber = floor(offsetToViewPercentage + 1)
         var pageNumberRound = round(offsetToViewPercentage)+1
         
-        
-        
-        
-        
-        
         if let test = lastContentOffset {
             if offset > lastContentOffset {
                 scrollDirection = ScrollDirection.Right
@@ -131,6 +132,8 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         }
         
         lastContentOffset = offset
+
+        scrollAnimationOnColor(offset)
         
         if offsetToViewPercentage <= 0.5 {
             var normalizedRange = offsetToViewPercentage/0.5
@@ -232,6 +235,76 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     
     }
     
+
+    
+    func scrollAnimationOnColor(offset:CGFloat) {
+        var size = newView.viewA.bounds.width
+        var offsetToViewPercentage = offset/size
+        
+        if offsetToViewPercentage < 1 {
+            var normalizedRange = offsetToViewPercentage/1
+
+            // A << >> B
+            
+            backgroundColorA.getRed(&rNewViewA, green: &gNewViewA, blue: &bNewViewA, alpha: &aNewViewA)
+            backgroundColorB.getRed(&rNewViewB, green: &gNewViewB, blue: &bNewViewB, alpha: &aNewViewB)
+            
+            rDistanceAB = rNewViewA - rNewViewB
+            gDistanceAB = gNewViewA - gNewViewB
+            bDistanceAB = bNewViewA - bNewViewB
+            
+            
+            let currentR = -rDistanceAB * normalizedRange + rNewViewA
+            let currentG = -gDistanceAB * normalizedRange + gNewViewA
+            let currentB = -bDistanceAB * normalizedRange + bNewViewA
+            
+            self.view.backgroundColor = UIColor(red: currentR, green: currentG, blue: currentB, alpha: 1)
+            
+            
+            print("Phase A \(currentR * 255)")
+            
+            
+            
+            
+        } else if offsetToViewPercentage > 1  {
+            var normalizedRange = (offsetToViewPercentage - 1)
+
+            
+            // B << >> C
+            
+            backgroundColorB.getRed(&rNewViewB, green: &gNewViewB, blue: &bNewViewB, alpha: &aNewViewB)
+            backgroundColorC.getRed(&rNewViewC, green: &gNewViewC, blue: &bNewViewC, alpha: &aNewViewC)
+            
+            rDistanceBC = rNewViewB - rNewViewC
+            gDistanceBC = gNewViewB - gNewViewC
+            bDistanceBC = bNewViewB - bNewViewC
+            
+            
+            let currentR = -rDistanceBC * normalizedRange + rNewViewB
+            let currentG = -gDistanceBC * normalizedRange + gNewViewB
+            let currentB = -bDistanceBC * normalizedRange + bNewViewB
+            
+            self.view.backgroundColor = UIColor(red: currentR, green: currentG, blue: currentB, alpha: 1)
+
+            print("Phase B \(currentR * 255)")
+
+            
+            
+
+        } else {
+            self.view.backgroundColor = backgroundColorB
+            
+        }
+            
+        
+        
+        
+        
+    }
+    
+    
+    
+    
     func configurePageControl () {
 
         self.lcPageControl.numberOfPages = 3
@@ -247,6 +320,15 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         
         
     }
+    
+    func configureBGColor () {
+
+        self.view.backgroundColor = backgroundColorA
+        
+        
+    }
+    
+    
     
     func pageControlValueChanged() {
         

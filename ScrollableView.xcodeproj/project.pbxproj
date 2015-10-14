@@ -13,6 +13,7 @@
 		EA4838281B838C20004C4BD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA4838271B838C20004C4BD5 /* Images.xcassets */; };
 		EA48382B1B838C20004C4BD5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA4838291B838C20004C4BD5 /* LaunchScreen.xib */; };
 		EA4838371B838C20004C4BD5 /* ScrollableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4838361B838C20004C4BD5 /* ScrollableViewTests.swift */; };
+		EA9E62441BBE2E2E00F97AD1 /* cloud127.png in Resources */ = {isa = PBXBuildFile; fileRef = EA9E62431BBE2E2E00F97AD1 /* cloud127.png */; };
 		EAEF909B1BBB679A00B9A7D0 /* LCPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEF909A1BBB679A00B9A7D0 /* LCPageView.swift */; };
 		EAEF909D1BBC5CF700B9A7D0 /* LCScrollableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEF909C1BBC5CF700B9A7D0 /* LCScrollableView.swift */; };
 		EAEF909F1BBC5D1100B9A7D0 /* ConstraintFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEF909E1BBC5D1100B9A7D0 /* ConstraintFactory.swift */; };
@@ -40,6 +41,7 @@
 		EA4838301B838C20004C4BD5 /* ScrollableViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScrollableViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA4838351B838C20004C4BD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA4838361B838C20004C4BD5 /* ScrollableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableViewTests.swift; sourceTree = "<group>"; };
+		EA9E62431BBE2E2E00F97AD1 /* cloud127.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cloud127.png; sourceTree = "<group>"; };
 		EAEF909A1BBB679A00B9A7D0 /* LCPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCPageView.swift; sourceTree = "<group>"; };
 		EAEF909C1BBC5CF700B9A7D0 /* LCScrollableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCScrollableView.swift; sourceTree = "<group>"; };
 		EAEF909E1BBC5D1100B9A7D0 /* ConstraintFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintFactory.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				EAEF909E1BBC5D1100B9A7D0 /* ConstraintFactory.swift */,
 				EAEF90A01BBC5D4E00B9A7D0 /* LCView.swift */,
 				EA4838271B838C20004C4BD5 /* Images.xcassets */,
+				EA9E62431BBE2E2E00F97AD1 /* cloud127.png */,
 				EA4838291B838C20004C4BD5 /* LaunchScreen.xib */,
 				EA48381E1B838C20004C4BD5 /* Supporting Files */,
 			);
@@ -168,7 +171,8 @@
 		EA4838131B838C20004C4BD5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Khaled Taha";
 				TargetAttributes = {
 					EA48381A1B838C20004C4BD5 = {
@@ -204,6 +208,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA9E62441BBE2E2E00F97AD1 /* cloud127.png in Resources */,
 				EA4838261B838C20004C4BD5 /* Main.storyboard in Resources */,
 				EA48382B1B838C20004C4BD5 /* LaunchScreen.xib in Resources */,
 				EA4838281B838C20004C4BD5 /* Images.xcassets in Resources */,
@@ -292,6 +297,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -358,6 +364,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ScrollableView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "tahakhaled.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -368,6 +375,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ScrollableView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "tahakhaled.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -386,6 +394,7 @@
 				);
 				INFOPLIST_FILE = ScrollableViewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "tahakhaled.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScrollableView.app/ScrollableView";
 			};
@@ -401,6 +410,7 @@
 				);
 				INFOPLIST_FILE = ScrollableViewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "tahakhaled.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScrollableView.app/ScrollableView";
 			};

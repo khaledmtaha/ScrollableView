@@ -30,7 +30,7 @@ class LCView:UIView {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         commonInit()
     }
     
@@ -44,11 +44,11 @@ class LCView:UIView {
         
         headerLabel = UILabel()
         headerLabel.backgroundColor = UIColor.clearColor()
-        headerLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.numberOfLines = 3
         headerLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         headerLabel.font = headerLabelFont
-        headerLabel.textColor = UIColor.darkGrayColor()
+        headerLabel.textColor = UIColor.whiteColor()
         headerLabel.textAlignment = NSTextAlignment.Center
         
         self.insertSubview(headerLabel, atIndex: 0)
@@ -64,11 +64,11 @@ class LCView:UIView {
         
         subTextLabel = UILabel()
         subTextLabel.backgroundColor = UIColor.clearColor()
-        subTextLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        subTextLabel.translatesAutoresizingMaskIntoConstraints = false
         subTextLabel.numberOfLines = 3
         subTextLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         subTextLabel.font = subTextLabelFont
-        subTextLabel.textColor = UIColor.lightGrayColor()
+        subTextLabel.textColor = UIColor.whiteColor()
         subTextLabel.textAlignment = NSTextAlignment.Center
         
         self.insertSubview(subTextLabel, atIndex: 0)

@@ -45,31 +45,38 @@ class LCPageControl : UIControl {
     
     var indicatorSpacing: CGFloat = 5
     
-    var inactiveColor:UIColor = UIColor.lightGrayColor() {
+    var inactiveColor:UIColor = UIColor.whiteColor() {
         didSet {
             if inactiveColor == highlightedColor {
-                println("Inactive color is the same as Highlighted color")
+                print("Inactive color is the same as Highlighted color")
             }
             
 
         }
     }
     
-    var highlightedColor:UIColor = UIColor.darkGrayColor() {
+    var highlightedColor:UIColor = UIColor.whiteColor() {
         didSet {
             if highlightedColor == inactiveColor {
-                println("Inactive color is the same as Highlighted color")
+                print("Inactive color is the same as Highlighted color")
             }
             
 
         }
+    }
+    
+    var inactiveOpacity:Float = 0.5 {
+        didSet {
+            if inactiveOpacity > 1 {
+                print("Opacity should be lower than or equal to 1.0")
+            }        }
     }
     
     var activeViewTag : Int?
     
     var animationScale : CGFloat = 1.2
     
-    var duration:CFTimeInterval = 0.4
+    var duration:CFTimeInterval = 0.2
     
     var drawAssetsCount:Int = 0
     
@@ -86,7 +93,7 @@ class LCPageControl : UIControl {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         commonInit()
     }
     
@@ -101,7 +108,7 @@ class LCPageControl : UIControl {
     // MARK: Properties
     
     func setup() {
-        self.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.userInteractionEnabled = true
     }
     
@@ -150,6 +157,7 @@ class LCPageControl : UIControl {
             let currentSubview = UIView(frame: CGRectMake(subviewBegX, subviewBegY, indicatorWidth, indicatorHeight))
             currentSubview.layer.cornerRadius = indicatorWidth/2
             currentSubview.backgroundColor = inactiveColor
+            currentSubview.layer.opacity = inactiveOpacity
             currentSubview.viewWithTag(i)
             
             self.addSubview(currentSubview)
@@ -158,12 +166,12 @@ class LCPageControl : UIControl {
     
     // MARK: Touch Methods
     
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesEnded(touches, withEvent: event)
         
         // Objective: Detect where touches ended to determine which indicator was presumably targeted
         
-        if let touch = touches.first as? UITouch {
+        if let touch = touches.first  {
             let location = touch.locationInView(self)
             if let viewTag = tagForViewTouchedForPositionDetector(location) {
                 animateToCurrentPage(viewTag)
@@ -223,7 +231,7 @@ class LCPageControl : UIControl {
         
         let viewTag = currentPage - 1
         animateToCurrentPageByScrolling (viewTag)
-        println(viewTag)
+        print(viewTag)
         
     }
     
@@ -366,6 +374,20 @@ class LCPageControl : UIControl {
         cornerAnimation.fromValue = indicatorWidth/2
         cornerAnimation.toValue = (indicatorWidth * animationScale)/2
         
+        // Opacity
+        
+        let opacityAnimation = CABasicAnimation(keyPath: "opacity")
+        opacityAnimation.fromValue = 0.5
+        opacityAnimation.toValue = 1
+        
+        // Bounce
+        // http://stackoverflow.com/a/7787618/3662058
+        
+        
+        
+        
+        
+
         
         // Add Group Animations
         
@@ -379,6 +401,7 @@ class LCPageControl : UIControl {
         completion(view.layer.backgroundColor = highlightedColor.CGColor)
         completion(view.layer.bounds.size = CGSize(width: indicatorWidth * animationScale, height: indicatorWidth * animationScale))
         completion(view.layer.cornerRadius = (indicatorWidth * animationScale)/2)
+        completion(view.layer.opacity = 1)
         
     }
     
@@ -407,11 +430,18 @@ class LCPageControl : UIControl {
         cornerAnimation.fromValue = (indicatorWidth * animationScale)/2
         cornerAnimation.toValue = indicatorWidth/2
         
+        // Opacity
+        
+        let opacityAnimation = CABasicAnimation(keyPath: "opacity")
+        opacityAnimation.fromValue = 1
+        opacityAnimation.toValue = 0.5
+        
+        
         // Add Group Animations
         
         let groupAnim = CAAnimationGroup()
         groupAnim.timingFunction = CAMediaTimingFunction(controlPoints: 0.34, 0.01, 0.69, 1.37)
-        groupAnim.animations = [colorAnimation, sizeAnimation,cornerAnimation]
+        groupAnim.animations = [colorAnimation, sizeAnimation,cornerAnimation, opacityAnimation]
         groupAnim.duration = duration
         groupAnim.removedOnCompletion = false
         view.layer.addAnimation(groupAnim, forKey: "all")
@@ -419,6 +449,7 @@ class LCPageControl : UIControl {
         completion(view.layer.backgroundColor = inactiveColor.CGColor)
         completion(view.layer.bounds.size = CGSize(width: indicatorWidth, height: indicatorWidth))
         completion(view.layer.cornerRadius = (indicatorWidth)/2)
+        completion(view.layer.opacity = 0.5)
         
         
     }

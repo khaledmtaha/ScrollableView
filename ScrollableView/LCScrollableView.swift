@@ -34,11 +34,11 @@ class LCScrollableView:UIScrollView {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         commonInit()
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)
     }
     
@@ -53,21 +53,21 @@ class LCScrollableView:UIScrollView {
         viewA = LCView()
         viewA.headerLabel.text = "Lorem ipsum dolor sit amet"
         viewA.subTextLabel.text = "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        viewA.setTranslatesAutoresizingMaskIntoConstraints(false)
+        viewA.translatesAutoresizingMaskIntoConstraints = false
         
         self.insertSubview(viewA, atIndex: 0)
         
         viewB = LCView()
         viewB.headerLabel.text = "Duis aute "
         viewB.subTextLabel.text = "Velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        viewB.setTranslatesAutoresizingMaskIntoConstraints(false)
+        viewB.translatesAutoresizingMaskIntoConstraints = false
         
         self.insertSubview(viewB, atIndex: 0)
         
         viewC = LCView()
         viewC.headerLabel.text = "Duis leo"
         viewC.subTextLabel.text = "Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc"
-        viewC.setTranslatesAutoresizingMaskIntoConstraints(false)
+        viewC.translatesAutoresizingMaskIntoConstraints = false
         
         self.insertSubview(viewC, atIndex: 0)
         
